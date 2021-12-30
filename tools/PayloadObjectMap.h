@@ -58,7 +58,7 @@ public:
         return value;
     }
     // Field 需要手动释放。若 field_name 不存在，抛异常 std::out_of_range。
-    Field * getField(const std::string& field_name);
+    [[nodiscard]] Field * getField(const std::string& field_name);
 
 private:
     std::map<std::string, CmdField> * cmdDescription = nullptr;

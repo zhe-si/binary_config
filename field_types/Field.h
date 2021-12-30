@@ -17,8 +17,8 @@
 
 class Field {
 public:
-    static Field * createFieldFromPayload(const FieldType * fieldType, const std::vector<uint8_t>& data);
-    static Field * createFieldFromValue(const FieldType * fieldType, const std::any& value);
+    [[nodiscard]] static Field * createFieldFromPayload(const FieldType * fieldType, const std::vector<uint8_t>& data);
+    [[nodiscard]] static Field * createFieldFromValue(const FieldType * fieldType, const std::any& value);
 
     Field(const FieldType * fieldType, const std::vector<uint8_t>& data);
     Field(std::any value, const FieldType * fieldType);

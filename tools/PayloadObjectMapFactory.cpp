@@ -39,3 +39,7 @@ PayloadObjectMap *PayloadObjectMapFactory::createPayloadObjectMap(const uint8_t 
     for (int i = 0; i < size; i++) payloadVector.push_back(payload[i]);
     return PayloadObjectMapFactory::createPayloadObjectMap(payloadVector);
 }
+
+const CmdMessage &PayloadObjectMapFactory::getCmdMessageByName(const std::string& name) const {
+    return cmdsMap.at(name);
+}

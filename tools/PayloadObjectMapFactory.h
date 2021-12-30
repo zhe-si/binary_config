@@ -25,9 +25,11 @@ public:
     // 为了测试，设置为public，不限制单例构造不可见，但正常调用请使用 getInstance
     explicit PayloadObjectMapFactory(const CmdManager &cmdManager);
 
+    const CmdMessage& getCmdMessageByName(const std::string& name) const;
+
     // PayloadObjectMap* 需要手动释放。返回nullptr表示无匹配项，创建失败。
-    PayloadObjectMap * createPayloadObjectMap(const std::vector<uint8_t>& payload) const;
-    PayloadObjectMap * createPayloadObjectMap(const uint8_t * payload, int size) const;
+    [[nodiscard]] PayloadObjectMap * createPayloadObjectMap(const std::vector<uint8_t>& payload) const;
+    [[nodiscard]] PayloadObjectMap * createPayloadObjectMap(const uint8_t * payload, int size) const;
 
 private:
     // 根据cmd_manager配置生成
