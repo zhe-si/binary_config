@@ -12,6 +12,7 @@
 
 #include "../includes/config_types.h"
 #include "../field_types/Field.h"
+#include "CmdMessage.h"
 
 
 /**
@@ -19,14 +20,21 @@
  */
 class PayloadObjectMap {
 public:
-    explicit PayloadObjectMap(Cmd);
+    explicit PayloadObjectMap(const CmdMessage& cmdMessage);
+
     ~PayloadObjectMap();
 
-    int getTotalSize() const;
+    int getMinSize() const;
+    // 获得当前组包的实际大小，可能包括可变长参数，nowSize >= minSize
+    int getNowSize() const;
+    bool isHasUnknownFieldSize() const;
 
-    void loadPayload(const std::vector<uint8_t>& _payload);
+    // 若加载内容与该 PayloadObjectMap 对应的 Cmd 不匹配，取消加载，返回false
+    bool loadPayload(const std::vector<uint8_t>& _payload);
 
+    // 若 field_name 不存在，抛异常 std::out_of_range
     void setField(const std::string &field_name, const std::vector<uint8_t>& field_data);
+    // 若 field_name 不存在，抛异常 std::out_of_range
     void setField(const std::string &field_name, Field *field, bool autoReleaseField = false);
 
     /**
@@ -35,6 +43,7 @@ public:
      * @param field_name 字段名
      * @param default_value 默认值，目标类型，若为string，不可以写成 “abc”，要写成 string("abc")
      * @return 目标类型的字段值
+     * @throw 若 field_name 不存在，抛异常 std::out_of_range
      */
     template<typename T> T getField(const std::string& field_name, T default_value) {
         Field* field = getField(field_name);
@@ -48,13 +57,16 @@ public:
         delete field;
         return value;
     }
-    // Field 需要手动释放
+    // Field 需要手动释放。若 field_name 不存在，抛异常 std::out_of_range。
     Field * getField(const std::string& field_name);
 
 private:
-    std::map<std::string, CmdField> * description = nullptr;
-    int totalSize = -1;
+    std::map<std::string, CmdField> * cmdDescription = nullptr;
+    int payloadMinSize = -1;
+    bool hasUnknownFieldSize = false;
     std::vector<uint8_t> * payload = nullptr;
+
+    void clearVarData();
 };
 
 

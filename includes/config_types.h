@@ -7,7 +7,7 @@
 
 
 typedef struct {
-    int size;  // -1表示自由长度
+    int size;  // 负数表示自由长度
 
 } FieldType;
 
@@ -16,6 +16,7 @@ extern const FieldType SHORT;
 extern const FieldType LONG;
 extern const FieldType CHARS_4;
 extern const FieldType CHARS_1;
+// 帧尾自由长度数据类型，长度 -1
 extern const FieldType VAR_DATA;
 
 
@@ -28,6 +29,7 @@ typedef struct {
 } CmdField;
 
 
+// 指令最大字段数
 #define CMD_MAX_FIELDS_NUM 10
 
 
@@ -39,6 +41,7 @@ typedef struct {
 } Cmd;
 
 
+// 最大指令数
 #define CMDS_NUM 20
 
 

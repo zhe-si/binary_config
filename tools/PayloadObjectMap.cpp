@@ -6,35 +6,47 @@
 
 #include <utility>
 
+
 PayloadObjectMap::~PayloadObjectMap() {
     delete payload;
-    delete description;
+    delete cmdDescription;
 }
 
-PayloadObjectMap::PayloadObjectMap(Cmd cmd) {
-    description = new std::map<std::string, CmdField>();
+PayloadObjectMap::PayloadObjectMap(const CmdMessage& cmdMessage) {
+    cmdDescription = new std::map<std::string, CmdField>();
 
-    int nowPos = 0;
+    const Cmd &cmd = cmdMessage.getCmd();
     for (int i = 0; i < cmd.fields_num; i++) {
-        CmdField cmdField = cmd.fields[i];
-        cmdField.start_pos = nowPos;
-        nowPos += cmdField.type->size;
-        std::string nameString(cmdField.name);
-        (*description)[nameString] = cmdField;
+        const CmdField &cmdField = cmd.fields[i];
+        // map执行拷贝构造
+        (*cmdDescription)[std::string(cmdField.name)] = cmdField;
     }
-    totalSize = nowPos;
-    payload = new std::vector<uint8_t>(totalSize, 0);
+
+    payloadMinSize = cmdMessage.getCmdPayloadMinSize();
+    hasUnknownFieldSize = cmdMessage.isHasUnknownFieldSize();
+
+    payload = new std::vector<uint8_t>(payloadMinSize, 0);
 }
 
-void PayloadObjectMap::loadPayload(const std::vector<uint8_t>& _payload) {
-    payload->clear();
-    for (auto &d : _payload) payload->push_back(d);
+bool PayloadObjectMap::loadPayload(const std::vector<uint8_t>& _payload) {
+    if (_payload.size() >= getMinSize()) {
+        payload->clear();
+        for (auto &d : _payload) payload->push_back(d);
+        return true;
+    }
+    return false;
 }
 
 void PayloadObjectMap::setField(const std::string& field_name, const std::vector<uint8_t>& field_data) {
-    CmdField cmdField = (*description)[field_name];
-    for (int i = 0; i < cmdField.type->size; i++) {
-        (*payload)[i + cmdField.start_pos] = field_data[i];
+    CmdField cmdField = (*cmdDescription).at(field_name);
+    if (cmdField.type == &VAR_DATA) {
+        // set末尾可变长类型
+        clearVarData();
+        for (auto d : field_data) payload->push_back(d);
+    } else {
+        for (int i = 0; i < cmdField.type->size; i++) {
+            (*payload)[i + cmdField.start_pos] = field_data[i];
+        }
     }
 }
 
@@ -44,15 +56,34 @@ void PayloadObjectMap::setField(const std::string &field_name, Field *field, boo
 }
 
 Field * PayloadObjectMap::getField(const std::string& field_name) {
-    CmdField cmdField = (*description)[field_name];
+    CmdField cmdField = (*cmdDescription).at(field_name);
     std::vector<uint8_t> field_data;
-    field_data.reserve(cmdField.type->size);
-    for (int i = 0; i < cmdField.type->size; i++) {
-        field_data.push_back((*payload)[cmdField.start_pos + i]);
+    if (cmdField.type == &VAR_DATA) {
+        for (auto p = payload->begin() + getMinSize(); p != payload->end(); p++) {
+            field_data.push_back((*p));
+        }
+    } else {
+        field_data.reserve(cmdField.type->size);
+        for (int i = 0; i < cmdField.type->size; i++) {
+            field_data.push_back((*payload)[cmdField.start_pos + i]);
+        }
     }
     return Field::createFieldFromPayload(cmdField.type, field_data);
 }
 
-int PayloadObjectMap::getTotalSize() const {
-    return totalSize;
+int PayloadObjectMap::getMinSize() const {
+    return payloadMinSize;
 }
+
+int PayloadObjectMap::getNowSize() const {
+    return payload->size();
+}
+
+void PayloadObjectMap::clearVarData() {
+    payload->erase(payload->begin() + this->getMinSize(), payload->end());
+}
+
+bool PayloadObjectMap::isHasUnknownFieldSize() const {
+    return hasUnknownFieldSize;
+}
+

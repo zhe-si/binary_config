@@ -3,7 +3,7 @@ project(cmd_config)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_library(cmd_config library.cpp tools/PayloadObjectMap.cpp tools/PayloadObjectMap.h config/payload_configs.cpp includes/config_types.h tools/config_types.cpp field_types/Field.cpp field_types/Field.h field_types/IntField.h field_types/CharsField.cpp field_types/CharsField.h)
+add_library(cmd_config library.cpp tools/PayloadObjectMap.cpp tools/PayloadObjectMap.h config/payload_configs.cpp includes/config_types.h tools/config_types.cpp field_types/Field.cpp field_types/Field.h field_types/IntField.h field_types/CharsField.cpp field_types/CharsField.h tools/PayloadObjectMapFactory.cpp tools/PayloadObjectMapFactory.h tools/CmdMessage.cpp tools/CmdMessage.h)
 
 add_executable(test
         tests/test_main.cpp
@@ -20,4 +20,8 @@ add_executable(test
 
         tools/PayloadObjectMap.h
         tools/PayloadObjectMap.cpp
+        tools/PayloadObjectMapFactory.h
+        tools/PayloadObjectMapFactory.cpp
+        tools/CmdMessage.cpp
+        tools/CmdMessage.h
         )
