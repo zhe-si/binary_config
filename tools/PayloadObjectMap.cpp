@@ -87,3 +87,7 @@ bool PayloadObjectMap::isHasUnknownFieldSize() const {
     return hasUnknownFieldSize;
 }
 
+const std::vector<uint8_t> &PayloadObjectMap::getPayload() const {
+    return (*payload);
+}
+

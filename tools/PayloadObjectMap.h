@@ -31,6 +31,7 @@ public:
 
     // 若加载内容与该 PayloadObjectMap 对应的 Cmd 不匹配，取消加载，返回false
     bool loadPayload(const std::vector<uint8_t>& _payload);
+    const std::vector<uint8_t> & getPayload() const;
 
     // 若 field_name 不存在，抛异常 std::out_of_range
     void setField(const std::string &field_name, const std::vector<uint8_t>& field_data);
