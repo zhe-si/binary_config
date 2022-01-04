@@ -1,5 +1,5 @@
-#ifndef CMD_CONFIG_LIBRARY_H
-#define CMD_CONFIG_LIBRARY_H
+#ifndef CMD_CONFIG_CMD_CONFIG_CLIB_H
+#define CMD_CONFIG_CMD_CONFIG_CLIB_H
 
 
 #ifdef __cplusplus
@@ -12,13 +12,16 @@ typedef unsigned short uint16_t;
 typedef unsigned uint32_t;
 
 
+/**
+ * 库导入测试
+ */
 void hello();
 
 
 /********************* 解包 *************************/
 
 /**
- * 解析 payload 为对象（PayloadObjectMap）
+ * 解析 payload 为对象（PayloadObjectMap）（需手动释放）
  */
 void * loadPayload(uint8_t * payload, int size);
 
@@ -36,7 +39,7 @@ int getVarDataField(void * obj, char * fieldName, uint8_t * data);
 /********************* 组包 *************************/
 
 /**
- * 根据命令名生成空对象（PayloadObject）
+ * 根据命令名生成空对象（PayloadObject）（需手动释放）
  */
 void * createObject(char * cmdName);
 
@@ -55,8 +58,14 @@ void setVarDataField(void * obj, char * fieldName, uint8_t * data, int dataSize)
 int getPayload(void * obj, uint8_t * data);
 
 
+/**
+ * 释放 obj
+ */
+void releaseObj(void * obj);
+
+
 #ifdef __cplusplus
 }
 #endif
 
-#endif //CMD_CONFIG_LIBRARY_H
+#endif //CMD_CONFIG_CMD_CONFIG_CLIB_H

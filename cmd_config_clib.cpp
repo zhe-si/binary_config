@@ -1,4 +1,4 @@
-#include "includes/library.h"
+#include "includes/cmd_config_clib.h"
 
 #include <iostream>
 #include <vector>
@@ -88,4 +88,9 @@ int getPayload(void *obj, uint8_t *data) {
         for (int i = 0; i < payload.size(); i++) data[i] = payload[i];
     }
     return static_cast<int>(payload.size());
+}
+
+void releaseObj(void *obj) {
+    auto * poMap = static_cast<PayloadObjectMap *>(obj);
+    delete poMap;
 }
