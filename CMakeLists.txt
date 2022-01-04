@@ -30,11 +30,11 @@ add_library(cmd_config
 set(LIB_DIR cmd_config_lib)
 add_custom_command(TARGET cmd_config
         POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E echo_append "create cmd_config lib dir ... "
+        COMMAND ${CMAKE_COMMAND} -E echo create cmd_config lib dir...
         COMMAND ${CMAKE_COMMAND} -E rm -rf ${LIB_DIR}
         COMMAND ${CMAKE_COMMAND} -E copy libcmd_config.a ${LIB_DIR}/libs/cmd_config.a
         COMMAND ${CMAKE_COMMAND} -E copy_directory ${PROJECT_SOURCE_DIR}/includes ${LIB_DIR}/includes
-        COMMAND ${CMAKE_COMMAND} -E echo successful
+        COMMAND ${CMAKE_COMMAND} -E echo create cmd_config lib dir successful
         )
 
 
