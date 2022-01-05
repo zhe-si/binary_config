@@ -4,7 +4,8 @@ project(cmd_config)
 set(CMAKE_CXX_STANDARD 17)
 
 # 命令解析工具库
-add_library(cmd_config
+set(LIB_NAME cmd_config)
+add_library(${LIB_NAME}
         cmd_config_clib.cpp
         cmd_config_cxxlib.cpp
 
@@ -27,14 +28,14 @@ add_library(cmd_config
         tools/CmdMessage.h
         tools/CmdMessage.cpp
         )
-set(LIB_DIR cmd_config_lib)
-add_custom_command(TARGET cmd_config
+set(LIB_DIR ${LIB_NAME}_lib)
+add_custom_command(TARGET ${LIB_NAME}
         POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E echo create cmd_config lib dir...
+        COMMAND ${CMAKE_COMMAND} -E echo create ${LIB_NAME} lib dir...
         COMMAND ${CMAKE_COMMAND} -E rm -rf ${LIB_DIR}
-        COMMAND ${CMAKE_COMMAND} -E copy libcmd_config.a ${LIB_DIR}/libs/cmd_config.a
+        COMMAND ${CMAKE_COMMAND} -E copy lib${LIB_NAME}.a ${LIB_DIR}/libs/${LIB_NAME}.a
         COMMAND ${CMAKE_COMMAND} -E copy_directory ${PROJECT_SOURCE_DIR}/includes ${LIB_DIR}/includes
-        COMMAND ${CMAKE_COMMAND} -E echo create cmd_config lib dir successful
+        COMMAND ${CMAKE_COMMAND} -E echo create ${LIB_NAME} lib dir successful
         )
 
 
