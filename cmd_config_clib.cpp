@@ -4,7 +4,7 @@
 #include <vector>
 #include <cstring>
 
-#include "tools/PayloadObjectMapFactory.h"
+#include "includes/tools/PayloadObjectMapFactory.h"
 
 
 void hello() {
@@ -14,21 +14,21 @@ void hello() {
 
 void * loadPayload(uint8_t * payload, int size) {
     auto factory = PayloadObjectMapFactory::getInstance();
-    auto obj = factory->createPayloadObjectMap(payload, size);
+    auto obj = factory->createPOMByPayload(payload, size);
     return obj;
 }
 
-uint16_t getShortField(void * obj, char * fieldName) {
+uint16_t getShortField(void * obj, const char * fieldName) {
     auto * poMap = static_cast<PayloadObjectMap *>(obj);
     return poMap->getField(std::string(fieldName), uint16_t(-1));
 }
 
-uint32_t getLongField(void * obj, char * fieldName) {
+uint32_t getLongField(void * obj, const char * fieldName) {
     auto * poMap = static_cast<PayloadObjectMap *>(obj);
     return poMap->getField(std::string(fieldName), uint32_t(-1));
 }
 
-int getCharsField(void * obj, char * fieldName, char * outChars) {
+int getCharsField(void * obj, const char * fieldName, char * outChars) {
     auto * poMap = static_cast<PayloadObjectMap *>(obj);
     std::string field = poMap->getField(std::string(fieldName), std::string());
     if (nullptr != outChars) {
@@ -37,7 +37,7 @@ int getCharsField(void * obj, char * fieldName, char * outChars) {
     return static_cast<int>(field.size());
 }
 
-int getVarDataField(void * obj, char * fieldName, uint8_t * data) {
+int getVarDataField(void * obj, const char * fieldName, uint8_t * data) {
     auto * poMap = static_cast<PayloadObjectMap *>(obj);
     std::vector<uint8_t> field = poMap->getField(std::string(fieldName), std::vector<uint8_t>());
     if (nullptr != data) {
@@ -46,23 +46,22 @@ int getVarDataField(void * obj, char * fieldName, uint8_t * data) {
     return static_cast<int>(field.size());
 }
 
-void * createObject(char *cmdName) {
+void * createObject(const char *cmdName) {
     auto factory = PayloadObjectMapFactory::getInstance();
-    const CmdMessage &cmdMsg = factory->getCmdMessageByName(std::string(cmdName));
-    return new PayloadObjectMap(cmdMsg);
+    return factory->createPOMByName(std::string(cmdName));
 }
 
-void setShortField(void *obj, char *fieldName, uint16_t value) {
+void setShortField(void *obj, const char *fieldName, uint16_t value) {
     auto * poMap = static_cast<PayloadObjectMap *>(obj);
     poMap->setField(std::string(fieldName), Field::createFieldFromValue(&SHORT, value), true);
 }
 
-void setLongField(void *obj, char *fieldName, uint32_t value) {
+void setLongField(void *obj, const char *fieldName, uint32_t value) {
     auto * poMap = static_cast<PayloadObjectMap *>(obj);
     poMap->setField(std::string(fieldName), Field::createFieldFromValue(&LONG, value), true);
 }
 
-void setCharsField(void * obj, char * fieldName, char * value) {
+void setCharsField(void * obj, const char * fieldName, const char * value) {
     auto * poMap = static_cast<PayloadObjectMap *>(obj);
     const FieldType * type;
     size_t charsLength = strlen(value);
@@ -76,7 +75,7 @@ void setCharsField(void * obj, char * fieldName, char * value) {
     poMap->setField(std::string(fieldName), Field::createFieldFromValue(type, value), true);
 }
 
-void setVarDataField(void *obj, char *fieldName, uint8_t *data, int dataSize) {
+void setVarDataField(void *obj, const char *fieldName, const uint8_t *data, int dataSize) {
     auto * poMap = static_cast<PayloadObjectMap *>(obj);
     poMap->setField(std::string(fieldName), std::vector<uint8_t>(data, data + dataSize));
 }
@@ -93,4 +92,13 @@ int getPayload(void *obj, uint8_t *data) {
 void releaseObj(void *obj) {
     auto * poMap = static_cast<PayloadObjectMap *>(obj);
     delete poMap;
+}
+
+int getObjName(void * obj, char *objName) {
+    auto * poMap = static_cast<PayloadObjectMap *>(obj);
+    std::string cmdName = poMap->getCmdName();
+    if (nullptr != objName) {
+        strcpy_s(objName, cmdName.size() + 1, cmdName.data());
+    }
+    return static_cast<int>(cmdName.size());
 }

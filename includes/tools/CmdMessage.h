@@ -9,7 +9,7 @@
 #include <vector>
 #include <cstdint>
 
-#include "../includes/config_types.h"
+#include "../config_types.h"
 
 
 // 对 Cmd 的进一步封装

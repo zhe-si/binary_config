@@ -9,10 +9,10 @@ add_library(${LIB_NAME}
         cmd_config_clib.cpp
         cmd_config_cxxlib.cpp
 
-        field_types/Field.h
+        includes/field_types/Field.h
         field_types/Field.cpp
-        field_types/IntField.h
-        field_types/CharsField.h
+        includes/field_types/IntField.h
+        includes/field_types/CharsField.h
         field_types/CharsField.cpp
 
         # 公共配置类型
@@ -21,11 +21,11 @@ add_library(${LIB_NAME}
         tools/config_types.cpp
         config/payload_configs.cpp
 
-        tools/PayloadObjectMap.h
+        includes/tools/PayloadObjectMap.h
         tools/PayloadObjectMap.cpp
-        tools/PayloadObjectMapFactory.h
+        includes/tools/PayloadObjectMapFactory.h
         tools/PayloadObjectMapFactory.cpp
-        tools/CmdMessage.h
+        includes/tools/CmdMessage.h
         tools/CmdMessage.cpp
         )
 set(LIB_DIR ${LIB_NAME}_lib)
@@ -43,20 +43,20 @@ add_custom_command(TARGET ${LIB_NAME}
 add_executable(test
         tests/test_main.cpp
 
-        field_types/Field.h
+        includes/field_types/Field.h
         field_types/Field.cpp
-        field_types/IntField.h
-        field_types/CharsField.h
+        includes/field_types/IntField.h
+        includes/field_types/CharsField.h
         field_types/CharsField.cpp
 
         includes/config_types.h
         tools/config_types.cpp
         config/payload_configs.cpp
 
-        tools/PayloadObjectMap.h
+        includes/tools/PayloadObjectMap.h
         tools/PayloadObjectMap.cpp
-        tools/PayloadObjectMapFactory.h
+        includes/tools/PayloadObjectMapFactory.h
         tools/PayloadObjectMapFactory.cpp
-        tools/CmdMessage.h
+        includes/tools/CmdMessage.h
         tools/CmdMessage.cpp
         )

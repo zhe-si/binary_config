@@ -5,9 +5,9 @@
 #include <string>
 #include <iostream>
 #include <vector>
-#include "../field_types/Field.h"
-#include "../tools/PayloadObjectMap.h"
-#include "../tools/PayloadObjectMapFactory.h"
+#include "../includes/field_types/Field.h"
+#include "../includes/tools/PayloadObjectMap.h"
+#include "../includes/tools/PayloadObjectMapFactory.h"
 
 using namespace std;
 
@@ -93,7 +93,7 @@ void test4() {
     PayloadObjectMapFactory factory(test_cmd_manager);
     cout << "*a. p_eipc_no_var" << endl;
     vector<uint8_t> p_eipc_no_var{'\0', '\5', 'E', 'I', 'P', 'C', '\0', '\7', '\0', 'S', 'E', 'N', 'D', 'U'};
-    auto eipc_no_var = factory.createPayloadObjectMap(p_eipc_no_var);
+    auto eipc_no_var = factory.createPOMByPayload(p_eipc_no_var);
     m_p_s.push_back(eipc_no_var);
     cout << (nullptr != eipc_no_var) << endl;
     cout << (eipc_no_var->getNowSize() == p_eipc_no_var.size()) << endl;
@@ -104,13 +104,13 @@ void test4() {
 
     cout << "*b. p_eipc_short" << endl;
     vector<uint8_t> p_eipc_short{'\0', '\5', 'E', 'I', 'P', 'C', '\0', '\7', 'S', 'E', 'N', 'D', 'U'};
-    auto eipc_short = factory.createPayloadObjectMap(p_eipc_short);
+    auto eipc_short = factory.createPOMByPayload(p_eipc_short);
     m_p_s.push_back(eipc_short);
     cout << (nullptr == eipc_short) << endl;
 
     cout << "*c. p_eipc_var" << endl;
     vector<uint8_t> p_eipc_var{'\0', '\5', 'E', 'I', 'P', 'C', '\0', '\7', '\0', 'S', 'E', 'N', 'D', 'U', 'a', 'b', 'c'};
-    auto eipc_var = factory.createPayloadObjectMap(p_eipc_var);
+    auto eipc_var = factory.createPOMByPayload(p_eipc_var);
     m_p_s.push_back(eipc_var);
     cout << (nullptr != eipc_var) << endl;
     cout << (eipc_var->getNowSize() == p_eipc_var.size()) << endl;
@@ -121,7 +121,7 @@ void test4() {
 
     cout << "*d. p_tcrp_true" << endl;
     vector<uint8_t> p_tcrp_true{'\2', '\1', 'T', 'C', 'R', 'Q', '\0', '\2'};
-    auto tcrp_true = factory.createPayloadObjectMap(p_tcrp_true);
+    auto tcrp_true = factory.createPOMByPayload(p_tcrp_true);
     m_p_s.push_back(tcrp_true);
     cout << (nullptr != tcrp_true) << endl;
     cout << (tcrp_true->getMinSize() == p_tcrp_true.size()) << endl;
@@ -129,14 +129,14 @@ void test4() {
 
     cout << "*e. p_test_true" << endl;
     vector<uint8_t> p_test_true{'\0', '\0', '\0', 'N', '\0', '\0', 'Y', 'Y', 'Y', 'Y'};
-    auto test_ture = factory.createPayloadObjectMap(p_test_true);
+    auto test_ture = factory.createPOMByPayload(p_test_true);
     m_p_s.push_back(test_ture);
     cout << (nullptr != test_ture) << endl;
     cout << (test_ture->getField("t3", string("NNNN")) == "YYYY") << endl;
 
     cout << "*f. p_test_wrong" << endl;
     vector<uint8_t> p_test_wrong{'\0', '\0', '\0', 'N', '\0', '\0', 'Y', 'Y', 'Y', 'y'};
-    auto test_wrong = factory.createPayloadObjectMap(p_test_wrong);
+    auto test_wrong = factory.createPOMByPayload(p_test_wrong);
     m_p_s.push_back(test_wrong);
     cout << (nullptr == test_wrong) << endl;
 

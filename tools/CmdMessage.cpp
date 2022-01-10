@@ -3,7 +3,7 @@
 //
 
 #include <stdexcept>
-#include "CmdMessage.h"
+#include "../includes/tools/CmdMessage.h"
 
 
 CmdMessage::CmdMessage(const Cmd &_cmd) {

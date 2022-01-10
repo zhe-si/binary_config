@@ -2,9 +2,9 @@
 // Created by lq on 2021/12/28.
 //
 
-#include "Field.h"
-#include "IntField.h"
-#include "CharsField.h"
+#include "../includes/field_types/Field.h"
+#include "../includes/field_types/IntField.h"
+#include "../includes/field_types/CharsField.h"
 
 #include <utility>
 

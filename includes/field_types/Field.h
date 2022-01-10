@@ -12,7 +12,7 @@
 #include <stdexcept>
 #include <type_traits>
 #include <map>
-#include "../includes/config_types.h"
+#include "../config_types.h"
 
 
 class Field {

@@ -8,7 +8,7 @@
 #ifdef __cplusplus
 
 
-#include "../tools/PayloadObjectMapFactory.h"
+#include "tools/PayloadObjectMapFactory.h"
 
 
 #endif

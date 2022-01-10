@@ -2,7 +2,7 @@
 // Created by lq on 2021/12/27.
 //
 
-#include "PayloadObjectMap.h"
+#include "../includes/tools/PayloadObjectMap.h"
 
 #include <utility>
 
@@ -16,6 +16,7 @@ PayloadObjectMap::PayloadObjectMap(const CmdMessage& cmdMessage) {
     cmdDescription = new std::map<std::string, CmdField>();
 
     const Cmd &cmd = cmdMessage.getCmd();
+    cmdName = cmd.name;
     for (int i = 0; i < cmd.fields_num; i++) {
         const CmdField &cmdField = cmd.fields[i];
         // map执行拷贝构造
@@ -89,5 +90,9 @@ bool PayloadObjectMap::isHasUnknownFieldSize() const {
 
 const std::vector<uint8_t> &PayloadObjectMap::getPayload() const {
     return (*payload);
+}
+
+std::string PayloadObjectMap::getCmdName() {
+    return cmdName;
 }
 
