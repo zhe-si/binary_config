@@ -14,22 +14,22 @@ using namespace std;
 
 const CmdManager test_cmd_manager = {3, {
         {"TCRQ", 3, {
-                {"TE_SEQ_NO", -1, &SHORT, 0},
-                {"CMD", -1, &CHARS_4, "TCRQ"},
-                {"REPEAT_COUNT", -1, &SHORT, 0}}},
+                {"TE_SEQ_NO", -1, &FT_SHORT, 0},
+                {"CMD", -1, &FT_CHARS_4, "TCRQ"},
+                {"REPEAT_COUNT", -1, &FT_SHORT, 0}}},
 
         {"EIPC", 6, {
-                {"TE_SEQ_NO", -1, &SHORT, 0},
-                {"CMD", -1, &CHARS_4, "EIPC"},
-                {"AFDX_COM_PORT", -1, &SHORT, 0},
-                {"SEND_OR_HOLD", 9, &CHARS_4, 0},
-                {"S_U", -1, &CHARS_1, 0},
-                {"MESSAGE", -1, &VAR_DATA, 0}}},
+                {"TE_SEQ_NO", -1, &FT_SHORT, 0},
+                {"CMD", -1, &FT_CHARS_4, "EIPC"},
+                {"AFDX_COM_PORT", -1, &FT_SHORT, 0},
+                {"SEND_OR_HOLD", 9, &FT_CHARS_4, 0},
+                {"S_U", -1, &FT_CHARS_1, 0},
+                {"MESSAGE", -1, &FT_VAR_DATA, 0}}},
 
         {"TEST", 3, {
-                {"t1", 3, &CHARS_1, "N"},
-                {"t2", -1, &SHORT, 0},
-                {"t3", -1, &CHARS_4, "YYYY"}}},
+                {"t1", 3, &FT_CHARS_1, "N"},
+                {"t2", -1, &FT_SHORT, 0},
+                {"t3", -1, &FT_CHARS_4, "YYYY"}}},
 }};
 
 void test1() {
@@ -61,7 +61,7 @@ void test2() {
     auto seq_no = any_cast<uint16_t>(seq_no_any);
     cout << (seq_no == 1) << endl;
     delete field;
-    poMap.setField("CMD", Field::createFieldFromValue(&CHARS_4, "EEEE"), true);
+    poMap.setField("CMD", Field::createFieldFromValue(&FT_CHARS_4, "EEEE"), true);
     auto cmd_s_1 = poMap.getField("CMD", string("ERR0"));
     cout << (cmd_s_1 == string("EEEE")) << endl;
 }

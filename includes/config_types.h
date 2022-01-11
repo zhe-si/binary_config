@@ -12,12 +12,13 @@ typedef struct {
 } FieldType;
 
 
-extern const FieldType SHORT;
-extern const FieldType LONG;
-extern const FieldType CHARS_4;
-extern const FieldType CHARS_1;
+extern const FieldType FT_BYTE;
+extern const FieldType FT_SHORT;
+extern const FieldType FT_LONG;
+extern const FieldType FT_CHARS_4;
+extern const FieldType FT_CHARS_1;
 // 帧尾自由长度数据类型，长度 -1
-extern const FieldType VAR_DATA;
+extern const FieldType FT_VAR_DATA;
 
 
 typedef struct {

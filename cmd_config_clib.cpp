@@ -18,6 +18,11 @@ void * loadPayload(uint8_t * payload, int size) {
     return obj;
 }
 
+uint8_t getByteField(void *obj, const char *fieldName) {
+    auto * poMap = static_cast<PayloadObjectMap *>(obj);
+    return poMap->getField(std::string(fieldName), uint8_t(-1));
+}
+
 uint16_t getShortField(void * obj, const char * fieldName) {
     auto * poMap = static_cast<PayloadObjectMap *>(obj);
     return poMap->getField(std::string(fieldName), uint16_t(-1));
@@ -51,14 +56,19 @@ void * createObject(const char *cmdName) {
     return factory->createPOMByName(std::string(cmdName));
 }
 
+void setByteField(void *obj, const char *fieldName, uint8_t value) {
+    auto * poMap = static_cast<PayloadObjectMap *>(obj);
+    poMap->setField(std::string(fieldName), Field::createFieldFromValue(&FT_BYTE, value), true);
+}
+
 void setShortField(void *obj, const char *fieldName, uint16_t value) {
     auto * poMap = static_cast<PayloadObjectMap *>(obj);
-    poMap->setField(std::string(fieldName), Field::createFieldFromValue(&SHORT, value), true);
+    poMap->setField(std::string(fieldName), Field::createFieldFromValue(&FT_SHORT, value), true);
 }
 
 void setLongField(void *obj, const char *fieldName, uint32_t value) {
     auto * poMap = static_cast<PayloadObjectMap *>(obj);
-    poMap->setField(std::string(fieldName), Field::createFieldFromValue(&LONG, value), true);
+    poMap->setField(std::string(fieldName), Field::createFieldFromValue(&FT_LONG, value), true);
 }
 
 void setCharsField(void * obj, const char * fieldName, const char * value) {
@@ -66,11 +76,11 @@ void setCharsField(void * obj, const char * fieldName, const char * value) {
     const FieldType * type;
     size_t charsLength = strlen(value);
     if (1 == charsLength) {
-        type = &CHARS_1;
+        type = &FT_CHARS_1;
     } else if (4 == charsLength) {
-        type = &CHARS_4;
+        type = &FT_CHARS_4;
     } else {
-        throw std::runtime_error("chars length is unknown, now has CHARS_1 and CHARS_4");
+        throw std::runtime_error("chars length is unknown, now has FT_CHARS_1 and FT_CHARS_4");
     }
     poMap->setField(std::string(fieldName), Field::createFieldFromValue(type, value), true);
 }

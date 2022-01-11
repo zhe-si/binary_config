@@ -35,6 +35,13 @@ public:
     const CmdMessage& getCmdMessageByName(const std::string& name) const;
 
     /**
+     * 获取所有 cmds 信息，用于遍历使用。
+     * 因为工厂是全局单例，所以不会出现引用的对象先被释放的问题。
+     * @return cmd 名字到 cmd 信息的映射 Map
+     */
+    const std::map<std::string, CmdMessage>& getCmdsMap() const;
+
+    /**
      * 根据名字创建新 PayloadObjectMap 对象
      * @param name cmd 名字
      * @return 对应名字的 cmd 的 PayloadObjectMap 对象

@@ -40,7 +40,7 @@ bool PayloadObjectMap::loadPayload(const std::vector<uint8_t>& _payload) {
 
 void PayloadObjectMap::setField(const std::string& field_name, const std::vector<uint8_t>& field_data) {
     CmdField cmdField = (*cmdDescription).at(field_name);
-    if (cmdField.type == &VAR_DATA) {
+    if (cmdField.type == &FT_VAR_DATA) {
         // set末尾可变长类型
         clearVarData();
         for (auto d : field_data) payload->push_back(d);
@@ -59,7 +59,7 @@ void PayloadObjectMap::setField(const std::string &field_name, Field *field, boo
 Field * PayloadObjectMap::getField(const std::string& field_name) {
     CmdField cmdField = (*cmdDescription).at(field_name);
     std::vector<uint8_t> field_data;
-    if (cmdField.type == &VAR_DATA) {
+    if (cmdField.type == &FT_VAR_DATA) {
         for (auto p = payload->begin() + getMinSize(); p != payload->end(); p++) {
             field_data.push_back((*p));
         }

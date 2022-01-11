@@ -33,6 +33,7 @@ int getObjName(void * obj, char * objName);
 /**
  * 从对象（PayloadObjectMap）获得某参数
  */
+uint8_t getByteField(void * obj, const char * fieldName);
 uint16_t getShortField(void * obj, const char * fieldName);
 uint32_t getLongField(void * obj, const char * fieldName);
 // 返回的是字符串实际长度，存储长度还要加1（结尾的\0）。若outChars为null，不写入数据
@@ -51,6 +52,7 @@ void * createObject(const char * cmdName);
 /**
  * 根据参数名向对象写入数据
  */
+void setByteField(void * obj, const char * fieldName, uint8_t value);
 void setShortField(void * obj, const char * fieldName, uint16_t value);
 void setLongField(void * obj, const char * fieldName, uint32_t value);
 void setCharsField(void * obj, const char * fieldName, const char * value);

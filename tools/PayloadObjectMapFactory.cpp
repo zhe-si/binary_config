@@ -48,3 +48,7 @@ PayloadObjectMap * PayloadObjectMapFactory::createPOMByName(const std::string &n
     const CmdMessage &cmdMsg = getCmdMessageByName(name);
     return new PayloadObjectMap(cmdMsg);
 }
+
+const std::map<std::string, CmdMessage> & PayloadObjectMapFactory::getCmdsMap() const {
+    return cmdsMap;
+}

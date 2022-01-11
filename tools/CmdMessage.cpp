@@ -21,7 +21,7 @@ CmdMessage::CmdMessage(const Cmd &_cmd) {
         int typeSize = field.type->size;
         if (typeSize > 0) {
             nowPos += typeSize;
-        } else if (field.type == &VAR_DATA) {
+        } else if (field.type == &FT_VAR_DATA) {
             if (j == (cmd.fields_num - 1)) {
                 // 队尾可变长类型，不计入长度
                 hasUnknownFieldSize = true;
@@ -51,7 +51,7 @@ bool CmdMessage::checkRequires(const std::vector<uint8_t>& payload) const {
         CmdField field = cmd.fields[r];
         std::string require(field.primary_value);
         std::vector<uint8_t> fieldPayload;
-        if (field.type == &VAR_DATA) {
+        if (field.type == &FT_VAR_DATA) {
             fieldPayload = std::vector<uint8_t>(payload.begin() + field.start_pos,
                                                 payload.end());
         } else {

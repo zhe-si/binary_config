@@ -29,13 +29,15 @@ std::vector<uint8_t> Field::getPayload() {
 }
 
 Field * Field::createFieldFromPayload(const FieldType *fieldType, const std::vector<uint8_t> &data) {
-    if (fieldType == &SHORT) {
+    if (fieldType == &FT_BYTE) {
+        return new IntField<uint8_t>(fieldType, data);
+    } else if (fieldType == &FT_SHORT) {
         return new IntField<uint16_t>(fieldType, data);
-    } else if (fieldType == &LONG) {
+    } else if (fieldType == &FT_LONG) {
         return new IntField<uint32_t>(fieldType, data);
-    } else if (fieldType == &CHARS_4 || fieldType == &CHARS_1) {
+    } else if (fieldType == &FT_CHARS_4 || fieldType == &FT_CHARS_1) {
         return new CharsField(fieldType, data);
-    } else if (fieldType == &VAR_DATA) {
+    } else if (fieldType == &FT_VAR_DATA) {
         return new Field(fieldType, data);
     } else {
         throw std::runtime_error("unknown this fieldType");
@@ -43,11 +45,13 @@ Field * Field::createFieldFromPayload(const FieldType *fieldType, const std::vec
 }
 
 Field * Field::createFieldFromValue(const FieldType *fieldType, const std::any& value) {
-    if (fieldType == &SHORT) {
+    if (fieldType == &FT_BYTE) {
+        return new IntField<uint8_t>(value, fieldType);
+    } else if (fieldType == &FT_SHORT) {
         return new IntField<uint16_t>(value, fieldType);
-    } else if (fieldType == &LONG) {
+    } else if (fieldType == &FT_LONG) {
         return new IntField<uint32_t>(value, fieldType);
-    } else if (fieldType == &CHARS_4 || fieldType == &CHARS_1) {
+    } else if (fieldType == &FT_CHARS_4 || fieldType == &FT_CHARS_1) {
         std::string value_s;
         try {
             value_s = std::any_cast<std::string>(value);
@@ -55,7 +59,7 @@ Field * Field::createFieldFromValue(const FieldType *fieldType, const std::any& 
             value_s = std::any_cast<const char*>(value);
         }
         return new CharsField(value_s, fieldType);
-    } else if (fieldType == &VAR_DATA) {
+    } else if (fieldType == &FT_VAR_DATA) {
         return new Field(value, fieldType);
     } else {
         throw std::runtime_error("unknown this fieldType");
